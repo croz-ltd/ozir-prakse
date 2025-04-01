@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .App {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100vw;
+        }
+
+        .App-header {
+            background-color: #282c34;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(10px + 2vmin);
+            color: white;
+            width: 100vw;
+            text-align: center;
+        }
+    </style>
+
+    <title>
+        Sistem DevOps | CROZ Ljetni Akcelerator 2025
+    </title>
+</head>
+
+<body>
+    <div class="App">
+        <header class="App-header">
+            <p>
+                Random word we got from the backend
+            </p>
+            <code id="random_word"></code>
+            <h6>
+                Refreshing every 3 seconds
+            </h6>
+        </header>
+    </div>
+</body>
+
+<script>
+    function fetchData() {
+        fetch("{{ backend_url }}")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('backend response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const word = document.getElementById("random_word");
+                word.textContent = data;
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 3000);
+
+    window.addEventListener('beforeunload', () => clearInterval(interval));
+</script>
+
+</html>
